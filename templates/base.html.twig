@@ -2,12 +2,17 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <link rel="icon" type="image/png" href="{{ asset('build/images/favicon.png') }}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
 
         {% block javascripts %}{% endblock %}
+        {{ encore_entry_link_tags('app') }}
+        {{ encore_entry_script_tags('app') }}
     </head>
     <body>
+    {{ include('Components/_navbar.html.twig') }}
         {% block body %}{% endblock %}
     </body>
 </html>
