@@ -50,9 +50,15 @@ class Project
      */
     private $skills;
 
+    /**
+     * @ORM\OneToMany(targetEntity=SkillsProject::class, mappedBy="project", orphanRemoval=true)
+     */
+    private $skillsProjects;
+
     public function __construct()
     {
         $this->skills = new ArrayCollection();
+        $this->skillsProjects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -142,6 +148,36 @@ class Project
     {
         if ($this->skills->removeElement($skill)) {
             $skill->removeProject($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SkillsProject[]
+     */
+    public function getSkillsProjects(): Collection
+    {
+        return $this->skillsProjects;
+    }
+
+    public function addSkillsProject(SkillsProject $skillsProject): self
+    {
+        if (!$this->skillsProjects->contains($skillsProject)) {
+            $this->skillsProjects[] = $skillsProject;
+            $skillsProject->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSkillsProject(SkillsProject $skillsProject): self
+    {
+        if ($this->skillsProjects->removeElement($skillsProject)) {
+            // set the owning side to null (unless already changed)
+            if ($skillsProject->getProject() === $this) {
+                $skillsProject->setProject(null);
+            }
         }
 
         return $this;
