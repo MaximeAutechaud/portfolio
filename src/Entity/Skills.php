@@ -26,6 +26,7 @@ class Skills
 
     /**
      * @ORM\ManyToMany(targetEntity=Project::class, inversedBy="skills")
+     * @ORM\JoinTable()
      */
     private $project;
 

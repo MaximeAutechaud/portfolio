@@ -12,10 +12,13 @@ class SkillsFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
+        $i = 1;
         foreach (self::SKILLS as $skillName) {
             $skill = new Skills();
             $skill->setName($skillName);
             $manager->persist($skill);
+            $this->addReference('skill_' . $i, $skill);
+            $i++;
         }
         $manager->flush();
     }

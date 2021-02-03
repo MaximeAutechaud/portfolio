@@ -4,14 +4,21 @@ namespace App\DataFixtures;
 
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Service\Slugify;
 
-class UserFixtures extends Fixture
+class UserFixtures extends Fixture implements OrderedFixtureInterface
 {
+
     private $passwordEncoder;
     private $slugify;
+
+    public function getOrder()
+    {
+        return 1;
+    }
 
     public function __construct(UserPasswordEncoderInterface $passwordEncoder, Slugify $slugify)
     {
@@ -32,6 +39,8 @@ class UserFixtures extends Fixture
             $user,
             'password'
         ));
+        $this->addReference('user', $user);
+        //$this->addReference($user->getFirstname() . ' ' . $user->getLastname(), $user);
         $manager->persist($user);
         $manager->flush();
     }
