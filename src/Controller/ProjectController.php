@@ -38,16 +38,18 @@ class ProjectController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        $user = $this->getUser();
         $project = new Project();
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $project->setUser($user);
             $entityManager->persist($project);
             $entityManager->flush();
 
-            return $this->redirectToRoute('project_index');
+            return $this->redirectToRoute('profil_index');
         }
 
         return $this->render('project/new.html.twig', [
