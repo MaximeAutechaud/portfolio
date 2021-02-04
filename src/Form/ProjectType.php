@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class ProjectType extends AbstractType
 {
@@ -18,7 +19,12 @@ class ProjectType extends AbstractType
                 'required' => true,
                 'label' => 'Nom du projet',
             ])
-            ->add('photo')
+            ->add('photoProjectFile', VichFileType::class, [
+                'required' => false,
+                'allow_delete' => true,
+                'download_uri' => true,
+                'download_label' => false,
+            ])
             ->add('description', TextType::class, [
                 'required' => true,
                 'label' => 'Description',

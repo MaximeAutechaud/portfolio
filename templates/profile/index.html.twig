@@ -39,18 +39,21 @@
             <div>
                 <div class="card bg-dark text-white my-5" style="width: 15rem">
                     <a href="http://{{ project.url }}" style="text-decoration: none; color: white; font-weight: bold; text-shadow: 1px 1px 1px black">
-                        <img src="{{ project.photo }}" class="card-img" alt="{{ project.name }}">
+                        <img src="{{ vich_uploader_asset(project, 'photoProjectFile') }}" class="card-img" alt="{{ project.name }}">
                         <div class="card-img-overlay" style="vertical-align: bottom">
                             <h3 class="card-title text-center">{{ project.name }}</h3>
                         </div>
                     </a>
                 </div>
                 <div class="container d-flex justify-content-center" style="width: 100%">
-                    <a href="{{ path('project_edit', {'id': project.id}) }}">
+                    <a  href="{{ path('project_edit', {'id': project.id}) }}">
                         <button type="button" class="btn btn-info">Editer</button>
                     </a>
+                </div>
+                <div class="container d-flex justify-content-center" style="width: 100%">
                     {{ include('project/_delete_form.html.twig') }}
                 </div>
+
             </div>
         {% endfor %}
     </div>

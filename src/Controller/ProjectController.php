@@ -53,6 +53,8 @@ class ProjectController extends AbstractController
             $entityManager->persist($project);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Votre projet a bien été créé !');
+
             return $this->redirectToRoute('profil_index');
         }
 
@@ -65,7 +67,7 @@ class ProjectController extends AbstractController
     /**
      * @param Project $project
      * @return Response
-     * @Route("/{id}", name="show", methods={"GET", "POST"})
+     * @Route("/show/{id}", name="show", methods={"GET", "POST"})
      */
     public function show(Project $project): Response
     {
@@ -77,13 +79,29 @@ class ProjectController extends AbstractController
     /**
      * @param Request $request
      * @param Project $project
+     * @return Response
+     * @Route("/{id}", name="delete", methods={"DELETE"})
+     */
+    public function delete(Request $request, Project $project): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $project->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($project);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('project_index');
+    }
+
+    /**
+     * @param Request $request
+     * @param Project $project
      * @param EntityManagerInterface $entityManager
      * @return Response
-     * @Route("/{id}/edit", name="edit", methods={"GET", "POST"})
+     * @Route("/edit/{id}", name="edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Project $project, EntityManagerInterface $entityManager): Response
     {
-        $project = new Project();
         $form = $this->createForm(EditProjectType::class, $project);
         $form->handleRequest($request);
 
@@ -101,20 +119,4 @@ class ProjectController extends AbstractController
         ]);
     }
 
-    /**
-     * @param Request $request
-     * @param Project $project
-     * @return Response
-     * @Route("/{id}", name="delete", methods={"DELETE"})
-     */
-    public function delete(Request $request, Project $project): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$project->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($project);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('project_index');
-    }
 }

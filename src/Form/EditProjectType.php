@@ -20,7 +20,7 @@ class EditProjectType extends AbstractType
                 'required' => true,
                 'label' => 'Nom'
             ])
-            ->add('photoProject', VichFileType::class, [
+            ->add('photoProjectFile', VichFileType::class, [
                 'required' => false,
                 'allow_delete' => true,
                 'download_uri' => true,

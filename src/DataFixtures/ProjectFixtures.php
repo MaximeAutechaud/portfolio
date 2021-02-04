@@ -11,7 +11,7 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
 {
     public const PROJECTS = [
         'name' => 'Projet random',
-        'photo' => 'https://via.placeholder.com/150',
+        'photo' => 'tilleul-arbre.jpg',
         'description' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
         'url' => 'www.google.com',
     ];
@@ -28,7 +28,7 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
             $project->setName(self::PROJECTS['name']);
             $project->setDescription(self::PROJECTS['description']);
             $project->setUrl(self::PROJECTS['url']);
-            $project->setPhoto(self::PROJECTS['photo']);
+            $project->setPhotoProject(self::PROJECTS['photo']);
             $project->setUser($this->getReference('user_' . rand(1,2)));
             $manager->persist($project);
         }

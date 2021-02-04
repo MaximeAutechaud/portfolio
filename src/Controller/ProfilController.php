@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\EditProjectType;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,6 +35,8 @@ class ProfilController extends AbstractController
         $form = $this->createForm(EditProfilType::class, $user);
         $form->handleRequest($request);
 
+        //$formProject = $this->createForm(EditProjectType::class, $projects)
+
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($user);
             $entityManager->flush();
@@ -47,7 +50,5 @@ class ProfilController extends AbstractController
             'projects' => $projects,
             'user' => $user,
         ]);
-
     }
-
 }

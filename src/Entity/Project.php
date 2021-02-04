@@ -33,13 +33,13 @@ class Project
      * @ORM\Column(type="string", nullable=true, length=255)
      * @var string|null
      */
-    private $photo = null;
+    private $photoProject = null;
 
     /**
-     * @Vich\UploadableField(mapping="photo_project", fileNameProperty="photo")
+     * @Vich\UploadableField(mapping="photo_project", fileNameProperty="photoProject")
      * @var File|null
      */
-    private $photoProject = null;
+    private $photoProjectFile = null;
 
     /**
      * @ORM\Column(type="datetime")
@@ -96,14 +96,14 @@ class Project
         return $this;
     }
 
-    public function getPhoto(): ?string
+    public function getPhotoProject(): ?string
     {
-        return $this->photo;
+        return $this->photoProject;
     }
 
-    public function setPhoto(string $photo): self
+    public function setPhotoProject(string $photo): self
     {
-        $this->photo = $photo;
+        $this->photoProject = $photo;
 
         return $this;
     }
@@ -171,18 +171,18 @@ class Project
         return $this;
     }
 
-    public function setPhotoProject(File $image = null): Project
+    public function setPhotoProjectFile(File $image = null): Project
     {
-        $this->photoProject = $image;
+        $this->photoProjectFile = $image;
         if ($image) {
             $this->updatedAt = new \DateTimeImmutable('now');
         }
         return $this;
     }
 
-    public function getPhotoProject(): ?File
+    public function getPhotoProjectFile(): ?File
     {
-        return $this->photoProject;
+        return $this->photoProjectFile;
     }
 
     public function getUpdatedAt()
