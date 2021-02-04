@@ -9,7 +9,12 @@ use Doctrine\Persistence\ObjectManager;
 
 class ProjectFixtures extends Fixture implements OrderedFixtureInterface
 {
-    public const PROJECT_REFERENCE = 'Projet random';
+    public const PROJECTS = [
+        'name' => 'Projet random',
+        'photo' => 'https://via.placeholder.com/150',
+        'description' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
+        'url' => 'www.google.com',
+    ];
 
     public function getOrder()
     {
@@ -18,17 +23,19 @@ class ProjectFixtures extends Fixture implements OrderedFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        $project = new Project();
-        $project->setName(self::PROJECT_REFERENCE);
-        $project->setDescription('C\'était vraiment cool ce projet lol');
-        $project->setUrl('www.google.com');
-        $project->setPhoto('https://www.google.fr/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png');
-        $project->setUser($this->getReference('user'));
-        for ($i=0; $i > 5;$i++) {
+        for ($i = 0; $i < 10 ; $i++) {
+            $project = new Project();
+            $project->setName(self::PROJECTS['name']);
+            $project->setDescription(self::PROJECTS['description']);
+            $project->setUrl(self::PROJECTS['url']);
+            $project->setPhoto(self::PROJECTS['photo']);
+            $project->setUser($this->getReference('user_' . rand(1,2)));
+            $manager->persist($project);
+        }
+        /* for ($i=0; $i > 5;$i++) {
             $skills = $project->addSkill($this->getReference('skill_' . SkillsFixtures::SKILLS[rand(0, sizeof(SkillsFixtures::SKILLS) - 1)]));
             $manager->persist($skills);
-        }
-        $manager->persist($project);
+        } */
         $manager->flush();
     }
 }

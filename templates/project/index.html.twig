@@ -3,20 +3,21 @@
 {% block title %}Project index{% endblock %}
 
 {% block body %}
-    <h1 class="text-center py-3">Project index</h1>
+    <h1 class="text-center mt-5">Tous les projets</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Photo</th>
-                <th>Description</th>
-                <th>Url</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="container" style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center">
+        {% for project in projects %}
+            <div class="card bg-dark text-white my-5" style="width: 30rem">
+                <a href="{{ path('project_show', {'id': project.id}) }}" style="text-decoration: none; color: white; font-weight: bold; text-shadow: 1px 1px 1px black">
+                    <img src="{{ project.photo }}" class="card-img" alt="{{ project.name }}">
+                    <div class="card-img-overlay" style="vertical-align: bottom">
+                        <h3 class="card-title text-center">{{ project.name }}</h3>
+                        <p class="card-text align-bottom" >{{ project.description }}</p>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
         {% for project in projects %}
             <tr>
                 <td>{{ project.id }}</td>

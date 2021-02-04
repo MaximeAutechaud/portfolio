@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,13 +23,15 @@ class UserController extends AbstractController
 
     /**
      * @param UserRepository $userRepository
+     * @param ProjectRepository $projectRepository
      * @return Response
      * @Route("/index", name="index", methods={"GET", "POST"})
      */
-    public function index(UserRepository $userRepository): Response
+    public function index(UserRepository $userRepository, ProjectRepository $projectRepository): Response
     {
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
+            'projects' => $projectRepository->findAll()
         ]);
     }
 
@@ -59,14 +62,18 @@ class UserController extends AbstractController
 
     /**
      * @param User $user
+     * @param ProjectRepository $projectRepository
      * @return Response
      * @Route("/{slug}", name="show", methods={"GET"})
      * @ParamConverter("user", class="App\Entity\User", options={"mapping": {"slug": "slug"}})
      */
-    public function show(User $user): Response
+    public function show(User $user, ProjectRepository $projectRepository): Response
     {
         return $this->render('user/show.html.twig', [
             'user' => $user,
+            'projects' => $projectRepository->findBy([
+                'user' => $user->getId()
+            ]),
         ]);
     }
 

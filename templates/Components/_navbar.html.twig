@@ -7,7 +7,7 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="">Les portfolios</a>
+                    <a class="nav-link active" aria-current="page" href="{{ path('portfolio_index') }}">Les portfolios</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" href="{{ path('project_index') }}">Les projets</a>
@@ -24,5 +24,19 @@
                 </li>
             </ul>
         </div>
+        <ul class="navbar-nav">
+        {% if app.user %}
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="">Ajouter un projet</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{{ path('app_logout') }}">Se déconecter</a>
+            </li>
+        {% else %}
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{{ path('app_login') }}">Se connecter</a>
+            </li>
+        {% endif %}
+        </ul>
     </div>
 </nav>
