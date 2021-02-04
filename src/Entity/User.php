@@ -7,8 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Vich\UploaderBundle\Entity\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
+use Serializable;
 use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
@@ -16,7 +17,7 @@ use Symfony\Component\Validator\Constraints\DateTime;
  * @ORM\Table(name="`user`")
  * @Vich\Uploadable
  */
-class User implements UserInterface
+class User implements UserInterface, Serializable
 {
     /**
      * @ORM\Id
@@ -57,10 +58,10 @@ class User implements UserInterface
     private $photo;
 
     /**
-     * @Vich\UploadableField(mapping="profil_photo", fileNameProperty="profilPhoto")
+     * @Vich\UploadableField(mapping="profil_photo", fileNameProperty="photo")
      * @var File|null
      */
-    private $profilPhotoFile;
+    private $profilPhoto;
 
     /**
      * @ORM\Column(type="datetime")
@@ -92,6 +93,24 @@ class User implements UserInterface
     public function __toString()
     {
         return $this->getFirstname() . ' ' . $this->getLastname();
+    }
+
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->email,
+            $this->password,
+        ));
+    }
+
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->email,
+            $this->password,
+            ) = unserialize($serialized);
     }
 
     public function getId(): ?int
@@ -262,18 +281,18 @@ class User implements UserInterface
         return $this;
     }
 
-    public function setProfilPhotoFile(File $image = null): User
+    public function setProfilPhoto(File $image = null): User
     {
-        $this->profilPhotoFile = $image;
+        $this->profilPhoto = $image;
         if ($image) {
             $this->updatedAt = new \DateTimeImmutable('now');
         }
         return $this;
     }
 
-    public function getProfilPhotoFile(): ?File
+    public function getProfilPhoto(): ?File
     {
-        return $this->profilPhotoFile;
+        return $this->profilPhoto;
     }
 
     public function getUpdatedAt()
