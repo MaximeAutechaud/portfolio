@@ -46,13 +46,18 @@ class Project
     private $user;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Skills::class, mappedBy="project")
+     * @ORM\ManyToMany(targetEntity=Skills::class, inversedBy="project")
      */
     private $skills;
 
     public function __construct()
     {
         $this->skills = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 
     public function getId(): ?int
