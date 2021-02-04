@@ -6,9 +6,14 @@ use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
+
+
 
 /**
  * @ORM\Entity(repositoryClass=ProjectRepository::class)
+ * @Vich\Uploadable
  */
 class Project
 {
@@ -25,9 +30,22 @@ class Project
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", nullable=true, length=255)
+     * @var string|null
      */
-    private $photo;
+    private $photo = null;
+
+    /**
+     * @Vich\UploadableField(mapping="photo_project", fileNameProperty="photo")
+     * @var File|null
+     */
+    private $photoProject = null;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @var \DateTimeInterface|null
+     */
+    private $updatedAt;
 
     /**
      * @ORM\Column(type="text")
@@ -53,6 +71,7 @@ class Project
     public function __construct()
     {
         $this->skills = new ArrayCollection();
+        $this->updatedAt = new \DateTimeImmutable('now');
     }
 
     public function __toString()
@@ -148,6 +167,32 @@ class Project
         if ($this->skills->removeElement($skill)) {
             $skill->removeProject($this);
         }
+
+        return $this;
+    }
+
+    public function setPhotoProject(File $image = null): Project
+    {
+        $this->photoProject = $image;
+        if ($image) {
+            $this->updatedAt = new \DateTimeImmutable('now');
+        }
+        return $this;
+    }
+
+    public function getPhotoProject(): ?File
+    {
+        return $this->photoProject;
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt($updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

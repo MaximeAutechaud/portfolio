@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Project;
+use App\Form\EditProjectType;
 use App\Form\ProjectType;
 use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -75,18 +77,22 @@ class ProjectController extends AbstractController
     /**
      * @param Request $request
      * @param Project $project
+     * @param EntityManagerInterface $entityManager
      * @return Response
      * @Route("/{id}/edit", name="edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Project $project): Response
+    public function edit(Request $request, Project $project, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(ProjectType::class, $project);
+        $project = new Project();
+        $form = $this->createForm(EditProjectType::class, $project);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->persist($project);
+            $entityManager->flush();
 
-            return $this->redirectToRoute('project_index');
+            $this->addFlash('success', 'Le projet a été modifié avec succès !');
+            return $this->redirectToRoute('profil_index');
         }
 
         return $this->render('project/edit.html.twig', [

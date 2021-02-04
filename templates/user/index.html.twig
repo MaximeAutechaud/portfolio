@@ -9,7 +9,7 @@
         {% for user in users %}
             <div class="card" style="width: 28rem; border-radius: 3%">
                 <a href="{{ path('portfolio_show', {'slug': user.slug}) }}">
-                    <img src="{{ user.photo }}" class="card-img-top" style="border-radius: 3%" alt="{{ user.firstname }} {{ user.lastname }}">
+                    <img src="{{ vich_uploader_asset(user, 'profilPhoto') }}" class="card-img-top" style="border-radius: 3%; max-height: 30rem" alt="{{ user.firstname }} {{ user.lastname }}">
                 </a>
                 <div class="card-body">
                     <h3>{{ user.firstname }} {{ user.lastname }}</h3>

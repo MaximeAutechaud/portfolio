@@ -45,7 +45,12 @@
                         </div>
                     </a>
                 </div>
-                {{ include('project/_delete_form.html.twig') }}
+                <div class="container d-flex justify-content-center" style="width: 100%">
+                    <a href="{{ path('project_edit', {'id': project.id}) }}">
+                        <button type="button" class="btn btn-info">Editer</button>
+                    </a>
+                    {{ include('project/_delete_form.html.twig') }}
+                </div>
             </div>
         {% endfor %}
     </div>

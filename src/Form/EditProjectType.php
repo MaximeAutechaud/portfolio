@@ -3,12 +3,13 @@
 namespace App\Form;
 
 use App\Entity\Project;
-use Doctrine\DBAL\Types\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class EditProjectType extends AbstractType
 {
@@ -19,10 +20,18 @@ class EditProjectType extends AbstractType
                 'required' => true,
                 'label' => 'Nom'
             ])
-            ->add('photo')
+            ->add('photoProject', VichFileType::class, [
+                'required' => false,
+                'allow_delete' => true,
+                'download_uri' => true,
+                'download_label' => false,
+            ])
             ->add('description', TextareaType::class, [
                 'required' => true,
                 'label' => 'Résumé',
+                'attr' => [
+                    'placeholder' => 'Faites un petit résumé de votre projet !'
+                ]
             ])
             ->add('url', UrlType::class, [
                 'required' => true,
