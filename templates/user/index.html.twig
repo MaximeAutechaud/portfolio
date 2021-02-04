@@ -7,17 +7,17 @@
 
         <div class="container my-5" style="display: flex; justify-content: space-around; flex-wrap: wrap; align-items: center">
         {% for user in users %}
-            <div class="card" style="width: 28rem;">
+            <div class="card" style="width: 28rem; border-radius: 3%">
                 <a href="{{ path('portfolio_show', {'slug': user.slug}) }}">
-                    <img src="{{ user.photo }}" class="card-img-top" alt="{{ user.firstname }} {{ user.lastname }}">
+                    <img src="{{ user.photo }}" class="card-img-top" style="border-radius: 3%" alt="{{ user.firstname }} {{ user.lastname }}">
                 </a>
                 <div class="card-body">
                     <h3>{{ user.firstname }} {{ user.lastname }}</h3>
                     <p class="card-text">{{ user.description }}</p>
-                    <a href="{{ path('portfolio_edit', {'slug': user.slug}) }}">edit</a>
+                    {# <a href="{{ path('portfolio_edit', {'slug': user.slug}) }}">edit</a> #}
                 </div>
             </div>
             {% endfor %}
         </div>
-    <a href="{{ path('portfolio_new') }}">Create new</a>
+    {# <a href="{{ path('portfolio_new') }}">Create new</a> #}
 {% endblock %}

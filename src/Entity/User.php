@@ -7,10 +7,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Vich\UploaderBundle\Entity\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
+ * @Vich\Uploadable
  */
 class User implements UserInterface
 {
@@ -53,6 +57,18 @@ class User implements UserInterface
     private $photo;
 
     /**
+     * @Vich\UploadableField(mapping="profil_photo", fileNameProperty="profilPhoto")
+     * @var File|null
+     */
+    private $profilPhotoFile;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @var \DateTimeInterface|null
+     */
+    private $updatedAt;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
@@ -70,6 +86,7 @@ class User implements UserInterface
     public function __construct()
     {
         $this->projects = new ArrayCollection();
+        $this->updatedAt = new \DateTimeImmutable('now');
     }
 
     public function __toString()
@@ -241,6 +258,32 @@ class User implements UserInterface
                 $project->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function setProfilPhotoFile(File $image = null): User
+    {
+        $this->profilPhotoFile = $image;
+        if ($image) {
+            $this->updatedAt = new \DateTimeImmutable('now');
+        }
+        return $this;
+    }
+
+    public function getProfilPhotoFile(): ?File
+    {
+        return $this->profilPhotoFile;
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt($updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

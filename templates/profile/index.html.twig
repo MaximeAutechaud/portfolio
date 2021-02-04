@@ -2,29 +2,50 @@
 
 {% block body %}
 
-    <h1>Bienvenue {{ user.firstname }}</h1>
+    <div class="container my-5 d-flex justify-content-between">
+        <h1>Bienvenue {{ user.firstname }}</h1>
+        <img src="{{ user.photo }}" alt="{{ user.username }}">
+    </div>
+
 
     <div class="container form-group">
         {{ form_start(formProfil) }}
-        {{ form_row(formProfil) }}
-        <button type="submit" class="btn" style="width: auto">Modifier mes informations</button>
+        <div class="m-3">
+            {{ form_widget(formProfil.firstname) }}
+        </div>
+        <div class="m-3">
+            {{ form_widget(formProfil.lastname) }}
+        </div>
+        <div class="m-3">
+            {{ form_widget(formProfil.email) }}
+        </div>
+        <div class="m-3">
+            {{ form_widget(formProfil.profilPhoto) }}
+        </div>
+        <div class="m-3">
+            {{ form_widget(formProfil.description) }}
+        </div>
+            <button type="submit" class="btn btn-success" style="width: auto">Modifier mes informations</button>
         {{ form_end(formProfil) }}
     </div>
 
-    <div class="container">
+    <div class="container p-3">
         <button type="button" class="btn btn-dark" style="width: auto">
             <a href="{{ path('project_new') }}" style="text-decoration: none; color: white">Ajouter un projet</a>
         </button>
     </div>
-    <div class="container" style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center">
+    <div class="container d-flex justify-content-between" style="flex-wrap: wrap; align-items: center">
         {% for project in projects %}
-            <div class="card bg-dark text-white my-5" style="width: 15rem">
-                <a href="{{ project.url }}" style="text-decoration: none; color: white; font-weight: bold; text-shadow: 1px 1px 1px black">
-                    <img src="{{ project.photo }}" class="card-img" alt="{{ project.name }}">
-                    <div class="card-img-overlay" style="vertical-align: bottom">
-                        <h3 class="card-title text-center">{{ project.name }}</h3>
-                    </div>
-                </a>
+            <div>
+                <div class="card bg-dark text-white my-5" style="width: 15rem">
+                    <a href="http://{{ project.url }}" style="text-decoration: none; color: white; font-weight: bold; text-shadow: 1px 1px 1px black">
+                        <img src="{{ project.photo }}" class="card-img" alt="{{ project.name }}">
+                        <div class="card-img-overlay" style="vertical-align: bottom">
+                            <h3 class="card-title text-center">{{ project.name }}</h3>
+                        </div>
+                    </a>
+                </div>
+                {{ include('project/_delete_form.html.twig') }}
             </div>
         {% endfor %}
     </div>

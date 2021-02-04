@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\ProjectRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,7 +25,7 @@ class ProfilController extends AbstractController
      * @return Response
      * @Route("/index", name="index")
      */
-    public function index(ProjectRepository $projectRepository, Request $request): Response
+    public function index(ProjectRepository $projectRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
         $projects = $projectRepository->findBy(
@@ -34,18 +35,17 @@ class ProfilController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $entityManager->persist($user);
+            $entityManager->flush();
 
             $this->addFlash('success', 'Votre profil a été modifié');
             return $this->redirectToRoute('profil_index');
         }
 
         return $this->render('profile/index.html.twig', [
+            'formProfil' => $form->createView(),
             'projects' => $projects,
             'user' => $user,
-            'formProfil' => $form->createView(),
         ]);
 
     }

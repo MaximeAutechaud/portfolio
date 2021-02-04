@@ -12,16 +12,11 @@
                 <li class="nav-item">
                     <a class="nav-link active" href="{{ path('project_index') }}">Les projets</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown link
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </li>
+                {% if app.user %}
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ path('profil_index') }}">Mon profil</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
         <ul class="navbar-nav">
@@ -30,7 +25,7 @@
                 <a class="nav-link active" aria-current="page" href="{{ path('project_new') }}">Ajouter un projet</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{ path('app_logout') }}">Se déconecter</a>
+                <a class="nav-link active" aria-current="page" href="{{ path('app_logout') }}">Se déconnecter</a>
             </li>
         {% else %}
             <li class="nav-item">

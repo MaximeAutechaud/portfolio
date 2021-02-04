@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Project;
 use App\Form\ProjectType;
 use App\Repository\ProjectRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,10 +23,11 @@ class ProjectController extends AbstractController
      * @return Response
      * @Route("/", name="index", methods={"GET", "POST"})
      */
-    public function index(ProjectRepository $projectRepository): Response
+    public function index(ProjectRepository $projectRepository, UserRepository $userRepository): Response
     {
         return $this->render('project/index.html.twig', [
             'projects' => $projectRepository->findAll(),
+            'users' => $userRepository->findAll(),
         ]);
     }
 
@@ -61,7 +63,7 @@ class ProjectController extends AbstractController
     /**
      * @param Project $project
      * @return Response
-     * @Route("/{id}", name="show", methods={"GET"})
+     * @Route("/{id}", name="show", methods={"GET", "POST"})
      */
     public function show(Project $project): Response
     {
