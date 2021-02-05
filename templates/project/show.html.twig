@@ -8,7 +8,7 @@
     <div class="container" style="max-width: 50rem">
         <div class="card my-5">
             <a href="http://{{ project.url }}">
-                <img src="{{ project.photoProject }}" class="card-img-top" alt="{{ project.name }}">
+                <img src="{{ vich_uploader_asset(project, 'photoProjectFile') }}" class="card-img-top" alt="{{ project.name }}">
             </a>
             <div class="card-body">
                 <p class="card-text">{{ project.description }}</p>
@@ -16,8 +16,6 @@
         </div>
     </div>
 
-    <a href="{{ path('project_index') }}">back to list</a>
-
-    <a href="{{ path('project_edit', {'id': project.id}) }}">edit</a>
+    <a href="{{ path('project_index') }}">Retour</a>
 
 {% endblock %}
